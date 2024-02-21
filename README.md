@@ -21,10 +21,12 @@ The system is designed to ferry metric data to the backend, facilitating its tra
 ## 🔧 Technical Overview
 
 Metrics are dispatched via a REST API, with user identification managed through specialized cookies:
+
 - **client_id**: A unique identifier stored as a cookie with a two-year lifespan.
 - **session_id**: A session-specific ID lasting for 30 minutes.
 
 ### Endpoints at Your Service:
+
 - `POST api/v1/auth/log-in`: Logs the user in.
 - `GET api/v1/auth/is-logged-in`: Verifies if the user is logged in.
 - `POST api/v1/auth/log-out`: Logs the user out.
@@ -33,22 +35,28 @@ Metrics are dispatched via a REST API, with user identification managed through 
 ## 🎨 Implementation Description
 
 Crafted with the innovative NestJS framework and leveraging MongoDB for data persistence, our architecture is built for efficiency:
+
 - **Event Consumer**: The linchpin that routes events to their respective processors.
 - **Event Processors**: Dedicated services, each implementing the `IMetricsProcessor` interface, poised for metric processing.
 
 ## 🚀 Setup Instructions
 
 ### Running the Service Solo
+
 Ensure your environment variables are in check (see `env.example` for guidance).
 
 - **Development Mode**: `pnpm run start:dev`
 - **Production Mode**: `pnpm build && pnpm run start:prod`
 
 ### Docker Compose: Service + Database
+
 Adjust your environment variables as needed (`compose.env.example` for the win!).
 
 - Launch with: `docker-compose up`
 
 ## 🧪 Running Tests
+
 Engage in quality control with:
-- `pnpm run test`
+
+- **unit tests**: `pnpm run test`
+- **e2e tests**: `pnpm run test:e2e`

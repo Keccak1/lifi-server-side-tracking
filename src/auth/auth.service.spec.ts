@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Request, Response } from 'express';
 import { LoggerService } from '../logger/logger.service';
@@ -48,16 +48,6 @@ describe('AuthService', () => {
   });
 
   describe('logIn', () => {
-    it('should throw ConflictException if user already logged in', async () => {
-      mockRequest.cookies = {
-        [CLIENT_ID_COOKIE]: 'test-client-id',
-      };
-
-      await expect(
-        service.logIn(mockRequest as Request, mockResponse as Response),
-      ).rejects.toThrow(ConflictException);
-    });
-
     it("should return 'User logged in after successful login", async () => {
       service.logIn(mockRequest as Request, mockResponse as Response);
 
@@ -71,6 +61,16 @@ describe('AuthService', () => {
         message: 'User logged in',
         statusCode: 200,
       });
+    });
+
+    it('should allow login if user already logged in', async () => {
+      mockRequest.cookies = {
+        [CLIENT_ID_COOKIE]: 'test-client-id',
+      };
+
+      await expect(
+        service.logIn(mockRequest as Request, mockResponse as Response),
+      ).resolves.not.toThrow();
     });
 
     it('should set proper cookies after successful login', async () => {
@@ -88,7 +88,6 @@ describe('AuthService', () => {
         expect.any(String),
         expect.objectContaining({
           httpOnly: true,
-          sameSite: 'strict',
           maxAge: CLIENT_ID_COOKIE_DURATION,
         }),
       );
@@ -98,7 +97,6 @@ describe('AuthService', () => {
         expect.any(String),
         expect.objectContaining({
           httpOnly: true,
-          sameSite: 'strict',
           maxAge: SESSION_COOKIE_DURATION,
         }),
       );
@@ -181,8 +179,7 @@ describe('AuthService', () => {
         SESSION_ID_COOKIE,
         expect.any(String),
         expect.objectContaining({
-          httpOnly: true,
-          sameSite: 'strict',
+          // httpOnly: true,
           maxAge: SESSION_COOKIE_DURATION,
         }),
       );

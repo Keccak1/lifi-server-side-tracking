@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { MetricsConsumerModule } from './metrics-consumer/metrics-consumer.module';
 import { MetricsController } from './metrics.controller';
 import { MetricsService } from './metrics.service';

@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { LoggerService } from '../logger/logger.service';
@@ -19,12 +14,16 @@ export class AuthService {
   constructor(private readonly loggerService: LoggerService) {}
   async logIn(req: Request, res: Response) {
     this.loggerService.debug('User login request');
+
     if (this.cookieExists(req, CLIENT_ID_COOKIE)) {
-      this.loggerService.error('User already logged in');
-      throw new ConflictException('User already logged in');
+      this.loggerService.debug('User already logged in');
+      res
+        .status(HttpStatus.OK)
+        .send({ message: 'User already logged in', statusCode: HttpStatus.OK });
     }
     const clientId = this.generateClientId();
     const sessionId = this.generateSessionId();
+
     this.assignClientCookieToResponse(res, clientId);
     this.assignSessionCookieToResponse(req, res, sessionId);
 
@@ -46,9 +45,7 @@ export class AuthService {
   }
 
   async isLoggedIn(req: Request, res: Response) {
-    console.log('check');
     this.loggerService.log('User login status request');
-    console.log(req.cookies[CLIENT_ID_COOKIE], req.cookies[SESSION_ID_COOKIE]);
     if (this.validateCookies(req, res)) {
       res
         .status(HttpStatus.OK)
@@ -56,6 +53,7 @@ export class AuthService {
     } else {
       res.status(HttpStatus.UNAUTHORIZED).send({
         message: 'User is not logged in',
+        error: 'Unauthorized',
         statusCode: HttpStatus.UNAUTHORIZED,
       });
     }

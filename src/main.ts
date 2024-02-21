@@ -27,6 +27,8 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
+  app.setGlobalPrefix('api');
+
   // TODO: This is only for test purposes
   app.enableCors({
     origin: function (origin, callback) {
@@ -40,7 +42,6 @@ async function bootstrap() {
 
   const port = process.env.APP_PORT || 3000;
   loggerService.log(`Listening on port ${port}`);
-  console.log(process.env.MONGO_URI, 'URI');
 
   console.error('PORT');
   await app.listen(port);
