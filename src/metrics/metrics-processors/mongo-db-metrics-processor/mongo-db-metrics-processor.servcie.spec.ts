@@ -33,7 +33,7 @@ describe('MongoDbMetricsProcessorService', () => {
 
   describe('process', () => {
     it('should return true when metric is successfully created', async () => {
-      metricsRepositoryService.createMetric = jest.fn().mockResolvedValue(true);
+      metricsRepositoryService.insertOne = jest.fn().mockResolvedValue(true);
       const result = await service.process(
         'client-id',
         'session-id',
@@ -41,7 +41,7 @@ describe('MongoDbMetricsProcessorService', () => {
         {},
       );
 
-      expect(metricsRepositoryService.createMetric).toHaveBeenCalledWith(
+      expect(metricsRepositoryService.insertOne).toHaveBeenCalledWith(
         'client-id',
         'session-id',
         'event-name',
@@ -51,7 +51,7 @@ describe('MongoDbMetricsProcessorService', () => {
     });
 
     it('should return false when metric creation fails', async () => {
-      metricsRepositoryService.createMetric = jest.fn().mockResolvedValue(null);
+      metricsRepositoryService.insertOne = jest.fn().mockResolvedValue(null);
 
       const result = await service.process(
         'client-id',
@@ -60,7 +60,7 @@ describe('MongoDbMetricsProcessorService', () => {
         {},
       );
 
-      expect(metricsRepositoryService.createMetric).toHaveBeenCalledWith(
+      expect(metricsRepositoryService.insertOne).toHaveBeenCalledWith(
         'client-id',
         'session-id',
         'event-name',

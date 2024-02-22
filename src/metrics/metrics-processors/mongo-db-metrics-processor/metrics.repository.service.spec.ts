@@ -47,7 +47,7 @@ describe('MetricsRepositoryService', () => {
     const name = 'test-metric';
     const data = { key: 'value' };
 
-    await service.createMetric(user, session, name, data);
+    await service.insertOne(user, session, name, data);
 
     expect(mockMetricModel().save).toHaveBeenCalled();
   });
@@ -58,6 +58,6 @@ describe('MetricsRepositoryService', () => {
     const name = 'test-metric';
     const data = { key: 'value' };
 
-    expect(await service.createMetric(user, session, name, data)).toEqual(true);
+    expect(await service.insertOne(user, session, name, data)).toEqual(true);
   });
 });
