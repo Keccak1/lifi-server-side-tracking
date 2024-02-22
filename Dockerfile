@@ -79,8 +79,6 @@ COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 COPY --chown=node:node --from=build $PNPM_STORE_PATH $PNPM_STORE_PATH
 
-# Expose the port the app runs on
-EXPOSE 8105
 
 # Set non-root user
 USER node
