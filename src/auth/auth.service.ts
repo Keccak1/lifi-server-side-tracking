@@ -118,7 +118,7 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       // TODO: only for development!
-      sameSite: 'none',
+      sameSite: 'strict',
       maxAge: maxAge,
     });
   }
