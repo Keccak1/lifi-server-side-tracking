@@ -12,7 +12,7 @@ export class MetricsRepositoryService {
     private readonly loggerService: LoggerService,
   ) {}
 
-  async createMetric(
+  async insertOne(
     user: string,
     session: string,
     name: string,
@@ -20,6 +20,7 @@ export class MetricsRepositoryService {
   ): Promise<MetricDocument | null> {
     try {
       const metric = new this.metricModel({ user, session, name, data });
+      this.loggerService.log(`Creating metric: ${metric}`);
       return metric.save();
     } catch (error: unknown) {}
 

@@ -15,7 +15,7 @@ export class MongoDbMetricsProcessorService implements IMetricsProcessor {
     name: string,
     data: AdditionalData,
   ): Promise<boolean> {
-    const value = await this.metricsRepositoryService.createMetric(
+    const value = await this.metricsRepositoryService.insertOne(
       clientId,
       sessionId,
       name,
