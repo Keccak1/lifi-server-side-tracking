@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  backend-service:
+    container_name: api
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - ./node_modules:/usr/src/node_modules
+      - ./src:/usr/src/app/src
+      - ./test:/usr/src/app/test
+    command: pnpm start:dev
+    env_file:
+      - .env
+    ports:
+      - '${PORT}:${PORT}'
+    restart: always
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    env_file:
+      - .env
+    ports:
+      - '27017:27017'
